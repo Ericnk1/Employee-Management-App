@@ -1,9 +1,9 @@
 package com.sda.recap.employeemanagementapp.controller;
 
+import com.sda.recap.employeemanagementapp.exception.EmployeeNotFoundException;
 import com.sda.recap.employeemanagementapp.model.Employee;
 import com.sda.recap.employeemanagementapp.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * /api/v1/employees
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1")
 public class EmployeeController {
@@ -23,7 +24,7 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    /*@Autowired
+        /*@Autowired
     public EmployeeController(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }*/
@@ -35,7 +36,7 @@ public class EmployeeController {
     }
     @GetMapping("/employees/{id}")
     public Employee getEmployee(@PathVariable Long id){
-        return employeeRepository.findById(id).get();
+        return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
     }
 
     @PostMapping("/employees")
@@ -43,21 +44,31 @@ public class EmployeeController {
         employeeRepository.save(employee);
     }
 
-    @PutMapping("/employees")
+    /*@PutMapping("/employees")
     public void updateEmployee(@RequestBody Employee employee) {
         employeeRepository.saveAndFlush(employee);
+    }*/
+
+    @PutMapping("/employees/{id}")
+    public void updateEmployee(@PathVariable Long id, @RequestBody Employee newEmployee) {
+        Employee oldEmployee = getEmployee(id);
+        if (oldEmployee != null) {
+            employeeRepository.delete(oldEmployee);
+            employeeRepository.save(newEmployee);
+        } else {
+            throw new EmployeeNotFoundException();
+        }
     }
 
     @DeleteMapping("/employees/{id}")
     public void deleteEmployeeById(@PathVariable Long id){
-        employeeRepository.findById(id).ifPresent(employee -> {
+        if (getEmployee(id) == null){
+            throw new EmployeeNotFoundException();
+        }else {
+            employeeRepository.deleteById(id);
+        }
+        /*employeeRepository.findById(id).ifPresent(employee -> {
             employeeRepository.delete(employee);
-        });
-    }
-
-    public void restoreEmployeeById(Long id) {
-        employeeRepository.findById(id).ifPresent(employee -> {
-
-        });
+        });*/
     }
 }
