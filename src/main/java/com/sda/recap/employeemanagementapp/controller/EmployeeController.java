@@ -8,18 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * /api/v1/employees
- */
+
 @CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
 @RestController
-@RequestMapping("https://employee-management-app-ang.herokuapp.com/")
+@RequestMapping("https://cors-anywhere.herokuapp.com/https://employee-management-app-ang.herokuapp.com/")
 public class EmployeeController {
-    /**
-     *
-     * @return
-     * list of employees
-     */
+
 
     @Autowired
     EmployeeRepository employeeRepository;
