@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
+// @CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
 @RestController
-@RequestMapping("https://cors-anywhere.herokuapp.com/https://employee-management-app-ang.herokuapp.com/")
+@RequestMapping("https://employee-management-app-ang.herokuapp.com/")
 public class EmployeeController {
 
 
