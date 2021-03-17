@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-// @CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
+@CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
 @RestController
-@RequestMapping("https://employee-management-app-ang.herokuapp.com/")
+@RequestMapping("/employees")
 public class EmployeeController {
 
 
@@ -23,17 +23,17 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }*/
 
-    @GetMapping("/employees")
+    @GetMapping//("/employees")
     public List<Employee> getEmployeeList() {
         return employeeRepository.findAll();
 
     }
-    @GetMapping("/employees/{id}")
+    @GetMapping("/{id}")
     public Employee getEmployee(@PathVariable Long id){
         return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
     }
 
-    @PostMapping("/employees")
+    @PostMapping//("/employees")
     public void createEmployee(@RequestBody Employee employee) {
         employeeRepository.save(employee);
     }
@@ -43,7 +43,7 @@ public class EmployeeController {
         employeeRepository.saveAndFlush(employee);
     }*/
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
     public void updateEmployee(@PathVariable Long id, @RequestBody Employee newEmployee) {
         Employee oldEmployee = getEmployee(id);
         if (oldEmployee != null) {
@@ -54,7 +54,7 @@ public class EmployeeController {
         }
     }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/{id}")
     public void deleteEmployeeById(@PathVariable Long id){
         if (getEmployee(id) == null){
             throw new EmployeeNotFoundException();
