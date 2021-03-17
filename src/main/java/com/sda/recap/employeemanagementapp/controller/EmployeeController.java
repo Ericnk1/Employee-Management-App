@@ -9,21 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@CrossOrigin(origins = "https://employee-management-app-ang.herokuapp.com/")
+//@CrossOrigin("/http://localhost:4200") //(origins = "https://employee-management-app-ang.herokuapp.com/")
 @RestController
-@RequestMapping("/employees")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/employee")
 public class EmployeeController {
 
 
     @Autowired
     EmployeeRepository employeeRepository;
 
-        /*@Autowired
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }*/
 
-    @GetMapping//("/employees")
+    @GetMapping
     public List<Employee> getEmployeeList() {
         return employeeRepository.findAll();
 
@@ -33,15 +30,10 @@ public class EmployeeController {
         return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
     }
 
-    @PostMapping//("/employees")
+    @PostMapping
     public void createEmployee(@RequestBody Employee employee) {
         employeeRepository.save(employee);
     }
-
-    /*@PutMapping("/employees")
-    public void updateEmployee(@RequestBody Employee employee) {
-        employeeRepository.saveAndFlush(employee);
-    }*/
 
     @PutMapping("/{id}")
     public void updateEmployee(@PathVariable Long id, @RequestBody Employee newEmployee) {
@@ -66,3 +58,4 @@ public class EmployeeController {
         });*/
     }
 }
+
